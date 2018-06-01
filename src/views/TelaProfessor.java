@@ -5,6 +5,16 @@
  */
 package views;
 
+
+import controller.PessoaDAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+import models.Professor;
+
 /**
  *
  * @author estevao
@@ -13,11 +23,63 @@ public class TelaProfessor extends javax.swing.JFrame {
 
     /**
      * Creates new form Professor
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
      */
-    public TelaProfessor() {
+    public TelaProfessor() throws ClassNotFoundException, SQLException {
         initComponents();
-      
+          
     }
+    
+public void pesquisarProfessor(String nome) throws ClassNotFoundException, SQLException{
+    
+    PessoaDAO dao = new PessoaDAO();
+    
+    DefaultTableModel modelo = (DefaultTableModel) tabelaProfessor.getModel();
+    
+    modelo.setNumRows(0);
+    tabelaProfessor.getColumnModel().getColumn(0).setPreferredWidth(100);
+    tabelaProfessor.getColumnModel().getColumn(1).setPreferredWidth(100);
+    tabelaProfessor.getColumnModel().getColumn(2).setPreferredWidth(100);
+    tabelaProfessor.getColumnModel().getColumn(3).setPreferredWidth(100);
+    tabelaProfessor.getColumnModel().getColumn(4).setPreferredWidth(100);
+
+    Professor p = new Professor();
+    p = dao.BuscarProfessor(nome);
+{
+	modelo.addRow(new Object[]{
+            p.getNome(), 
+            p.getRg(), 
+            p.getCpf(), 
+            p.getEndereco(), 
+            p.getFormacao()});
+	
+}  
+}
+    
+public void preencherTabela() throws ClassNotFoundException, SQLException{
+    
+    PessoaDAO dao = new PessoaDAO();
+    
+    DefaultTableModel modelo = (DefaultTableModel) tabelaProfessor.getModel();
+    
+    modelo.setNumRows(0);
+    tabelaProfessor.getColumnModel().getColumn(0).setPreferredWidth(100);
+    tabelaProfessor.getColumnModel().getColumn(1).setPreferredWidth(100);
+    tabelaProfessor.getColumnModel().getColumn(2).setPreferredWidth(100);
+    tabelaProfessor.getColumnModel().getColumn(3).setPreferredWidth(100);
+    tabelaProfessor.getColumnModel().getColumn(4).setPreferredWidth(100);
+
+    for (Professor p : dao.getProfessores()) {
+	modelo.addRow(new Object[]{
+            p.getNome(), 
+            p.getRg(), 
+            p.getCpf(), 
+            p.getEndereco(), 
+            p.getFormacao()});
+	}
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,10 +93,11 @@ public class TelaProfessor extends javax.swing.JFrame {
         btn_AdicionaProfessor = new javax.swing.JButton();
         btn_ExcluiProfessor = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaProfessor = new javax.swing.JTable();
         btn_PesquisaProfessor = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txt_CampoNome = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        btn_Menu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,74 +109,90 @@ public class TelaProfessor extends javax.swing.JFrame {
         });
 
         btn_ExcluiProfessor.setText("Excluir ");
+        btn_ExcluiProfessor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ExcluiProfessorActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaProfessor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nome", "RG", "CPF", "Endereco", "Formacao"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabelaProfessor);
 
         btn_PesquisaProfessor.setText("Pesquisar");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        btn_PesquisaProfessor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                btn_PesquisaProfessorActionPerformed(evt);
+            }
+        });
+
+        txt_CampoNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_CampoNomeActionPerformed(evt);
             }
         });
 
         jLabel1.setText("Nome:");
+
+        btn_Menu.setText("Menu Principal");
+        btn_Menu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_MenuActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(94, 94, 94)
-                .addComponent(btn_AdicionaProfessor)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(62, 62, 62)
-                                .addComponent(jLabel1)
-                                .addGap(40, 40, 40)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(54, 54, 54)
-                                .addComponent(btn_ExcluiProfessor)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btn_PesquisaProfessor)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(62, 62, 62)
+                            .addComponent(jLabel1)
+                            .addGap(40, 40, 40)
+                            .addComponent(txt_CampoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(54, 54, 54)
+                            .addComponent(btn_ExcluiProfessor)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_PesquisaProfessor)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(btn_AdicionaProfessor))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(134, 134, 134)
+                        .addComponent(btn_Menu))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
+                .addContainerGap(36, Short.MAX_VALUE)
                 .addComponent(btn_AdicionaProfessor)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_CampoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_ExcluiProfessor)
                     .addComponent(btn_PesquisaProfessor))
-                .addGap(32, 32, 32)
+                .addGap(35, 35, 35)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_Menu)
+                .addContainerGap())
         );
 
         pack();
@@ -126,10 +205,46 @@ public class TelaProfessor extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btn_AdicionaProfessorActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txt_CampoNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_CampoNomeActionPerformed
         // TODO add your handling code here:
 
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txt_CampoNomeActionPerformed
+
+    private void btn_MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MenuActionPerformed
+        // TODO add your handling code here:
+        TelaPessoa principal = new TelaPessoa();
+        principal.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btn_MenuActionPerformed
+
+    private void btn_ExcluiProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExcluiProfessorActionPerformed
+        // TODO add your handling code here:
+        PessoaDAO dao = new PessoaDAO();
+        dao.excluirProfessor(txt_CampoNome.getText());
+        txt_CampoNome.setText("");
+    }//GEN-LAST:event_btn_ExcluiProfessorActionPerformed
+
+    private void btn_PesquisaProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_PesquisaProfessorActionPerformed
+        // TODO add your handling code here:
+         String nome = txt_CampoNome.getText();
+        if(nome.isEmpty()){
+            try {
+                preencherTabela();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TelaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+             try {
+                 pesquisarProfessor(nome);
+             } catch (ClassNotFoundException ex) {
+                 Logger.getLogger(TelaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (SQLException ex) {
+                 Logger.getLogger(TelaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+             }
+        }
+    }//GEN-LAST:event_btn_PesquisaProfessorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,7 +277,13 @@ public class TelaProfessor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaProfessor().setVisible(true);
+                try {
+                    new TelaProfessor().setVisible(true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(TelaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -170,10 +291,13 @@ public class TelaProfessor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_AdicionaProfessor;
     private javax.swing.JButton btn_ExcluiProfessor;
+    private javax.swing.JButton btn_Menu;
     private javax.swing.JButton btn_PesquisaProfessor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tabelaProfessor;
+    private javax.swing.JTextField txt_CampoNome;
     // End of variables declaration//GEN-END:variables
+
+
 }

@@ -5,6 +5,10 @@
  */
 package views;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author estevao
@@ -72,7 +76,14 @@ public class TelaPessoa extends javax.swing.JFrame {
 
     private void btn_ProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ProfessorActionPerformed
         // TODO add your handling code here:
-        TelaProfessor telaprof = new TelaProfessor();
+        TelaProfessor telaprof = null;
+        try {
+            telaprof = new TelaProfessor();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaPessoa.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaPessoa.class.getName()).log(Level.SEVERE, null, ex);
+        }
         telaprof.setVisible(true);
         dispose();
         

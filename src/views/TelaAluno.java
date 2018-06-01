@@ -5,6 +5,13 @@
  */
 package views;
 
+import controller.PessoaDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import models.Aluno;
+
 /**
  *
  * @author estevao
@@ -16,8 +23,56 @@ public class TelaAluno extends javax.swing.JFrame {
      */
     public TelaAluno() {
         initComponents();
-    }
 
+    }
+public void pesquisarAluno(String nome) throws ClassNotFoundException, SQLException{
+    
+    PessoaDAO dao = new PessoaDAO();
+    
+    DefaultTableModel modelo = (DefaultTableModel) tabelaAluno.getModel();
+    
+    modelo.setNumRows(0);
+    tabelaAluno.getColumnModel().getColumn(0).setPreferredWidth(100);
+    tabelaAluno.getColumnModel().getColumn(1).setPreferredWidth(100);
+    tabelaAluno.getColumnModel().getColumn(2).setPreferredWidth(100);
+    tabelaAluno.getColumnModel().getColumn(3).setPreferredWidth(100);
+    tabelaAluno.getColumnModel().getColumn(4).setPreferredWidth(100);
+
+     Aluno a = new Aluno();
+     a = dao.BuscarAluno(nome);
+{
+	modelo.addRow(new Object[]{
+            a.getNome(), 
+            a.getRg(), 
+            a.getCpf(), 
+            a.getEndereco(), 
+            a.getIra()});
+	
+}  
+}
+    
+public void preencherTabela() throws ClassNotFoundException, SQLException{
+    
+    PessoaDAO dao = new PessoaDAO();
+    
+    DefaultTableModel modelo = (DefaultTableModel) tabelaAluno.getModel();
+    
+    modelo.setNumRows(0);
+    tabelaAluno.getColumnModel().getColumn(0).setPreferredWidth(100);
+    tabelaAluno.getColumnModel().getColumn(1).setPreferredWidth(100);
+    tabelaAluno.getColumnModel().getColumn(2).setPreferredWidth(100);
+    tabelaAluno.getColumnModel().getColumn(3).setPreferredWidth(100);
+    tabelaAluno.getColumnModel().getColumn(4).setPreferredWidth(100);
+
+    for (Aluno a : dao.getAlunos()) {
+	modelo.addRow(new Object[]{
+            a.getNome(), 
+            a.getRg(), 
+            a.getCpf(), 
+            a.getEndereco(), 
+            a.getIra()});
+	}
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,9 +86,10 @@ public class TelaAluno extends javax.swing.JFrame {
         btn_ExcluiAluno = new javax.swing.JButton();
         btn_PesquisaAluno = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_CampoNome = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaAluno = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -45,23 +101,37 @@ public class TelaAluno extends javax.swing.JFrame {
         });
 
         btn_ExcluiAluno.setText("Excluir");
+        btn_ExcluiAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ExcluiAlunoActionPerformed(evt);
+            }
+        });
 
         btn_PesquisaAluno.setText("Pesquisar");
+        btn_PesquisaAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_PesquisaAlunoActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Nome do Aluno:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaAluno.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nome", "RG", "CPF", "Endereço", "IRA"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabelaAluno);
+
+        jButton1.setText("Menu Principal");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -74,20 +144,22 @@ public class TelaAluno extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn_PesquisaAluno)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btn_ExcluiAluno))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(77, 77, 77)
+                        .addComponent(btn_ExcluiAluno)
+                        .addGap(100, 100, 100)
+                        .addComponent(btn_PesquisaAluno))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(144, 144, 144)
-                        .addComponent(btn_AdicionaAluno)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                        .addComponent(btn_AdicionaAluno))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txt_CampoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,15 +168,17 @@ public class TelaAluno extends javax.swing.JFrame {
                 .addComponent(btn_AdicionaAluno)
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_CampoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_PesquisaAluno)
-                    .addComponent(btn_ExcluiAluno))
                 .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_ExcluiAluno)
+                    .addComponent(btn_PesquisaAluno))
+                .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -116,6 +190,44 @@ public class TelaAluno extends javax.swing.JFrame {
         addaluno.setVisible(true);
         dispose();
     }//GEN-LAST:event_btn_AdicionaAlunoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        TelaPessoa principal = new TelaPessoa();
+        principal.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btn_ExcluiAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExcluiAlunoActionPerformed
+        // TODO add your handling code here:
+        PessoaDAO dao = new PessoaDAO();
+        String nome = txt_CampoNome.getText();
+        dao.excluirAluno(nome);
+        txt_CampoNome.setText("");
+        
+    }//GEN-LAST:event_btn_ExcluiAlunoActionPerformed
+
+    private void btn_PesquisaAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_PesquisaAlunoActionPerformed
+        // TODO add your handling code here:
+          String nome = txt_CampoNome.getText();
+        if(nome.isEmpty()){
+            try {
+                preencherTabela();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TelaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+             try {
+                 pesquisarAluno(nome);
+             } catch (ClassNotFoundException ex) {
+                 Logger.getLogger(TelaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (SQLException ex) {
+                 Logger.getLogger(TelaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+             }
+        }
+    }//GEN-LAST:event_btn_PesquisaAlunoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -157,9 +269,10 @@ public class TelaAluno extends javax.swing.JFrame {
     private javax.swing.JButton btn_AdicionaAluno;
     private javax.swing.JButton btn_ExcluiAluno;
     private javax.swing.JButton btn_PesquisaAluno;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tabelaAluno;
+    private javax.swing.JTextField txt_CampoNome;
     // End of variables declaration//GEN-END:variables
 }

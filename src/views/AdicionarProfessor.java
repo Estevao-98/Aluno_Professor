@@ -6,6 +6,9 @@
 package views;
 
 import controller.PessoaDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Professor;
 
 /**
@@ -151,7 +154,14 @@ public class AdicionarProfessor extends javax.swing.JFrame {
         professor.setFormacao(txt_Formacao.getText());        
         dao.inserirProfessor(professor);
         
-        TelaProfessor prof = new TelaProfessor();
+        TelaProfessor prof = null;
+        try {
+            prof = new TelaProfessor();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdicionarProfessor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdicionarProfessor.class.getName()).log(Level.SEVERE, null, ex);
+        }
         prof.setVisible(true);
         dispose();
         
@@ -159,7 +169,14 @@ public class AdicionarProfessor extends javax.swing.JFrame {
 
     private void btn_CancelInserirProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelInserirProfActionPerformed
         // TODO add your handling code here:
-        TelaProfessor prof = new TelaProfessor();
+        TelaProfessor prof = null;
+        try {
+            prof = new TelaProfessor();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdicionarProfessor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdicionarProfessor.class.getName()).log(Level.SEVERE, null, ex);
+        }
         prof.setVisible(true);
         dispose();        
     }//GEN-LAST:event_btn_CancelInserirProfActionPerformed
@@ -196,7 +213,7 @@ public class AdicionarProfessor extends javax.swing.JFrame {
             public void run() {
                 new AdicionarProfessor().setVisible(true);
             }
-        });
+        }); 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
